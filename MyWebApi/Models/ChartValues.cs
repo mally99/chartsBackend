@@ -2,7 +2,7 @@
 {
     public class ChartValues
     {
-        public string x { get; set; }
+        public string x { get; set; }  
         public int y { get; set; }
         public ChartValues(string x, int y)
         {

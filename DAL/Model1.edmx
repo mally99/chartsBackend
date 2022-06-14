@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBCellPhoneRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CustomerTbl">
+          <Key>
+            <PropertyRef Name="IdCustomer" />
+          </Key>
+          <Property Name="IdCustomer" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nchar" MaxLength="10" />
+          <Property Name="LastName" Type="nchar" MaxLength="10" />
+          <Property Name="Identity" Type="nchar" MaxLength="10" />
+          <Property Name="Addsress" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PackTbl">
+          <Key>
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdPack" Type="int" Nullable="false" />
+          <Property Name="NamePack" Type="nchar" MaxLength="20" />
+          <Property Name="QtyMiutes" Type="int" />
+        </EntityType>
+        <EntityType Name="SubscriberPacksTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdSubscriber" Type="int" Nullable="false" />
+          <Property Name="IdPack" Type="int" Nullable="false" />
+          <Property Name="UsingMinutes" Type="int" />
+        </EntityType>
+        <EntityType Name="SubscriberTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+          </Key>
+          <Property Name="IdSubscriber" Type="int" Nullable="false" />
+          <Property Name="NameSubscriber" Type="varchar" MaxLength="50" />
+          <Property Name="IdCustomer" Type="int" />
+        </EntityType>
+        <Association Name="FK_SubscriberPacksTbl_PackTbl">
+          <End Role="PackTbl" Type="Self.PackTbl" Multiplicity="1" />
+          <End Role="SubscriberPacksTbl" Type="Self.SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PackTbl">
+              <PropertyRef Name="IdPack" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdPack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberPacksTbl_SubscriberTbl">
+          <End Role="SubscriberTbl" Type="Self.SubscriberTbl" Multiplicity="1" />
+          <End Role="SubscriberPacksTbl" Type="Self.SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriberTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberTbl_CustomerTbl">
+          <End Role="CustomerTbl" Type="Self.CustomerTbl" Multiplicity="0..1" />
+          <End Role="SubscriberTbl" Type="Self.SubscriberTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Principal>
+            <Dependent Role="SubscriberTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBCellPhoneRMModelStoreContainer">
+          <EntitySet Name="CustomerTbl" EntityType="Self.CustomerTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PackTbl" EntityType="Self.PackTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriberPacksTbl" EntityType="Self.SubscriberPacksTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriberTbl" EntityType="Self.SubscriberTbl" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SubscriberPacksTbl_PackTbl" Association="Self.FK_SubscriberPacksTbl_PackTbl">
+            <End Role="PackTbl" EntitySet="PackTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberPacksTbl_SubscriberTbl" Association="Self.FK_SubscriberPacksTbl_SubscriberTbl">
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberTbl_CustomerTbl" Association="Self.FK_SubscriberTbl_CustomerTbl">
+            <End Role="CustomerTbl" EntitySet="CustomerTbl" />
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBCellPhoneRMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DBCellPhoneRMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomerTbl" EntityType="DBCellPhoneRMModel.CustomerTbl" />
+          <EntitySet Name="PackTbl" EntityType="DBCellPhoneRMModel.PackTbl" />
+          <EntitySet Name="SubscriberPacksTbl" EntityType="DBCellPhoneRMModel.SubscriberPacksTbl" />
+          <EntitySet Name="SubscriberTbl" EntityType="DBCellPhoneRMModel.SubscriberTbl" />
+          <AssociationSet Name="FK_SubscriberTbl_CustomerTbl" Association="DBCellPhoneRMModel.FK_SubscriberTbl_CustomerTbl">
+            <End Role="CustomerTbl" EntitySet="CustomerTbl" />
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberPacksTbl_PackTbl" Association="DBCellPhoneRMModel.FK_SubscriberPacksTbl_PackTbl">
+            <End Role="PackTbl" EntitySet="PackTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberPacksTbl_SubscriberTbl" Association="DBCellPhoneRMModel.FK_SubscriberPacksTbl_SubscriberTbl">
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CustomerTbl">
+          <Key>
+            <PropertyRef Name="IdCustomer" />
+          </Key>
+          <Property Name="IdCustomer" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Identity" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Addsress" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="SubscriberTbl" Relationship="DBCellPhoneRMModel.FK_SubscriberTbl_CustomerTbl" FromRole="CustomerTbl" ToRole="SubscriberTbl" />
+        </EntityType>
+        <EntityType Name="PackTbl">
+          <Key>
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdPack" Type="Int32" Nullable="false" />
+          <Property Name="NamePack" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="QtyMiutes" Type="Int32" />
+          <NavigationProperty Name="SubscriberPacksTbl" Relationship="DBCellPhoneRMModel.FK_SubscriberPacksTbl_PackTbl" FromRole="PackTbl" ToRole="SubscriberPacksTbl" />
+        </EntityType>
+        <EntityType Name="SubscriberPacksTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdSubscriber" Type="Int32" Nullable="false" />
+          <Property Name="IdPack" Type="Int32" Nullable="false" />
+          <Property Name="UsingMinutes" Type="Int32" />
+          <NavigationProperty Name="PackTbl" Relationship="DBCellPhoneRMModel.FK_SubscriberPacksTbl_PackTbl" FromRole="SubscriberPacksTbl" ToRole="PackTbl" />
+          <NavigationProperty Name="SubscriberTbl" Relationship="DBCellPhoneRMModel.FK_SubscriberPacksTbl_SubscriberTbl" FromRole="SubscriberPacksTbl" ToRole="SubscriberTbl" />
+        </EntityType>
+        <EntityType Name="SubscriberTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+          </Key>
+          <Property Name="IdSubscriber" Type="Int32" Nullable="false" />
+          <Property Name="NameSubscriber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdCustomer" Type="Int32" />
+          <NavigationProperty Name="CustomerTbl" Relationship="DBCellPhoneRMModel.FK_SubscriberTbl_CustomerTbl" FromRole="SubscriberTbl" ToRole="CustomerTbl" />
+          <NavigationProperty Name="SubscriberPacksTbl" Relationship="DBCellPhoneRMModel.FK_SubscriberPacksTbl_SubscriberTbl" FromRole="SubscriberTbl" ToRole="SubscriberPacksTbl" />
+        </EntityType>
+        <Association Name="FK_SubscriberTbl_CustomerTbl">
+          <End Type="DBCellPhoneRMModel.CustomerTbl" Role="CustomerTbl" Multiplicity="0..1" />
+          <End Type="DBCellPhoneRMModel.SubscriberTbl" Role="SubscriberTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Principal>
+            <Dependent Role="SubscriberTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberPacksTbl_PackTbl">
+          <End Type="DBCellPhoneRMModel.PackTbl" Role="PackTbl" Multiplicity="1" />
+          <End Type="DBCellPhoneRMModel.SubscriberPacksTbl" Role="SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PackTbl">
+              <PropertyRef Name="IdPack" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdPack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberPacksTbl_SubscriberTbl">
+          <End Type="DBCellPhoneRMModel.SubscriberTbl" Role="SubscriberTbl" Multiplicity="1" />
+          <End Type="DBCellPhoneRMModel.SubscriberPacksTbl" Role="SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriberTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBCellPhoneRMModelStoreContainer" CdmEntityContainer="DBCellPhoneRMEntities">
+          <EntitySetMapping Name="CustomerTbl">
+            <EntityTypeMapping TypeName="DBCellPhoneRMModel.CustomerTbl">
+              <MappingFragment StoreEntitySet="CustomerTbl">
+                <ScalarProperty Name="Addsress" ColumnName="Addsress" />
+                <ScalarProperty Name="Identity" ColumnName="Identity" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PackTbl">
+            <EntityTypeMapping TypeName="DBCellPhoneRMModel.PackTbl">
+              <MappingFragment StoreEntitySet="PackTbl">
+                <ScalarProperty Name="QtyMiutes" ColumnName="QtyMiutes" />
+                <ScalarProperty Name="NamePack" ColumnName="NamePack" />
+                <ScalarProperty Name="IdPack" ColumnName="IdPack" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriberPacksTbl">
+            <EntityTypeMapping TypeName="DBCellPhoneRMModel.SubscriberPacksTbl">
+              <MappingFragment StoreEntitySet="SubscriberPacksTbl">
+                <ScalarProperty Name="UsingMinutes" ColumnName="UsingMinutes" />
+                <ScalarProperty Name="IdPack" ColumnName="IdPack" />
+                <ScalarProperty Name="IdSubscriber" ColumnName="IdSubscriber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriberTbl">
+            <EntityTypeMapping TypeName="DBCellPhoneRMModel.SubscriberTbl">
+              <MappingFragment StoreEntitySet="SubscriberTbl">
+                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
+                <ScalarProperty Name="NameSubscriber" ColumnName="NameSubscriber" />
+                <ScalarProperty Name="IdSubscriber" ColumnName="IdSubscriber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

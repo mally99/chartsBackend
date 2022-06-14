@@ -1,0 +1,401 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CellPhoneDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CustomerTbl">
+          <Key>
+            <PropertyRef Name="IdCustomer" />
+          </Key>
+          <Property Name="IdCustomer" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="Identity" Type="varchar" MaxLength="50" />
+          <Property Name="Addsress" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PackTbl">
+          <Key>
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdPack" Type="int" Nullable="false" />
+          <Property Name="NamePack" Type="varchar" MaxLength="50" />
+          <Property Name="QtyMiutes" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CellPhoneDB.dbo.SubscriberPacksTbl' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SubscriberPacksTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdSubscriber" Type="int" Nullable="false" />
+          <Property Name="IdPack" Type="int" Nullable="false" />
+          <Property Name="UsingMinutes" Type="int" />
+        </EntityType>
+        <EntityType Name="SubscriberTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+          </Key>
+          <Property Name="IdSubscriber" Type="int" Nullable="false" />
+          <Property Name="NameSubscriber" Type="varchar" MaxLength="50" />
+          <Property Name="IdCustomer" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_SubscriberPacksTbl_PackTbl">
+          <End Role="PackTbl" Type="Self.PackTbl" Multiplicity="1" />
+          <End Role="SubscriberPacksTbl" Type="Self.SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PackTbl">
+              <PropertyRef Name="IdPack" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdPack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberPacksTbl_SubscriberTbl">
+          <End Role="SubscriberTbl" Type="Self.SubscriberTbl" Multiplicity="1" />
+          <End Role="SubscriberPacksTbl" Type="Self.SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriberTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberTbl_CustomerTbl">
+          <End Role="CustomerTbl" Type="Self.CustomerTbl" Multiplicity="0..1" />
+          <End Role="SubscriberTbl" Type="Self.SubscriberTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Principal>
+            <Dependent Role="SubscriberTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="CellPhoneDBModelStoreContainer">
+          <EntitySet Name="CustomerTbl" EntityType="Self.CustomerTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PackTbl" EntityType="Self.PackTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriberTbl" EntityType="Self.SubscriberTbl" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriberPacksTbl" EntityType="Self.SubscriberPacksTbl" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SubscriberPacksTbl].[IdSubscriber] AS [IdSubscriber], 
+    [SubscriberPacksTbl].[IdPack] AS [IdPack], 
+    [SubscriberPacksTbl].[UsingMinutes] AS [UsingMinutes]
+    FROM [dbo].[SubscriberPacksTbl] AS [SubscriberPacksTbl]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_SubscriberPacksTbl_PackTbl" Association="Self.FK_SubscriberPacksTbl_PackTbl">
+            <End Role="PackTbl" EntitySet="PackTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberPacksTbl_SubscriberTbl" Association="Self.FK_SubscriberPacksTbl_SubscriberTbl">
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberTbl_CustomerTbl" Association="Self.FK_SubscriberTbl_CustomerTbl">
+            <End Role="CustomerTbl" EntitySet="CustomerTbl" />
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CellPhoneDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CustomerTbl">
+          <Key>
+            <PropertyRef Name="IdCustomer" />
+          </Key>
+          <Property Name="IdCustomer" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Identity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Addsress" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="SubscriberTbl" Relationship="Self.FK_SubscriberTbl_CustomerTbl" FromRole="CustomerTbl" ToRole="SubscriberTbl" />
+        </EntityType>
+        <EntityType Name="PackTbl">
+          <Key>
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdPack" Type="Int32" Nullable="false" />
+          <Property Name="NamePack" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QtyMiutes" Type="Int32" />
+          <NavigationProperty Name="SubscriberPacksTbl" Relationship="Self.FK_SubscriberPacksTbl_PackTbl" FromRole="PackTbl" ToRole="SubscriberPacksTbl" />
+        </EntityType>
+        <EntityType Name="SubscriberTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+          </Key>
+          <Property Name="IdSubscriber" Type="Int32" Nullable="false" />
+          <Property Name="NameSubscriber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdCustomer" Type="Int32" />
+          <NavigationProperty Name="CustomerTbl" Relationship="Self.FK_SubscriberTbl_CustomerTbl" FromRole="SubscriberTbl" ToRole="CustomerTbl" />
+          <NavigationProperty Name="SubscriberPacksTbl" Relationship="Self.FK_SubscriberPacksTbl_SubscriberTbl" FromRole="SubscriberTbl" ToRole="SubscriberPacksTbl" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SubscriberPacksTbl">
+          <Key>
+            <PropertyRef Name="IdSubscriber" />
+            <PropertyRef Name="IdPack" />
+          </Key>
+          <Property Name="IdSubscriber" Type="Int32" Nullable="false" />
+          <Property Name="IdPack" Type="Int32" Nullable="false" />
+          <Property Name="UsingMinutes" Type="Int32" />
+          <NavigationProperty Name="PackTbl" Relationship="Self.FK_SubscriberPacksTbl_PackTbl" FromRole="SubscriberPacksTbl" ToRole="PackTbl" />
+          <NavigationProperty Name="SubscriberTbl" Relationship="Self.FK_SubscriberPacksTbl_SubscriberTbl" FromRole="SubscriberPacksTbl" ToRole="SubscriberTbl" />
+        </EntityType>
+        <Association Name="FK_SubscriberTbl_CustomerTbl">
+          <End Role="CustomerTbl" Type="Self.CustomerTbl" Multiplicity="0..1" />
+          <End Role="SubscriberTbl" Type="Self.SubscriberTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Principal>
+            <Dependent Role="SubscriberTbl">
+              <PropertyRef Name="IdCustomer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberPacksTbl_PackTbl">
+          <End Role="PackTbl" Type="Self.PackTbl" Multiplicity="1" />
+          <End Role="SubscriberPacksTbl" Type="Self.SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PackTbl">
+              <PropertyRef Name="IdPack" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdPack" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubscriberPacksTbl_SubscriberTbl">
+          <End Role="SubscriberTbl" Type="Self.SubscriberTbl" Multiplicity="1" />
+          <End Role="SubscriberPacksTbl" Type="Self.SubscriberPacksTbl" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriberTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Principal>
+            <Dependent Role="SubscriberPacksTbl">
+              <PropertyRef Name="IdSubscriber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CellPhoneDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CustomerTbl" EntityType="Self.CustomerTbl" />
+          <EntitySet Name="PackTbl" EntityType="Self.PackTbl" />
+          <EntitySet Name="SubscriberTbl" EntityType="Self.SubscriberTbl" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="SubscriberPacksTbl" EntityType="Self.SubscriberPacksTbl" />
+          <AssociationSet Name="FK_SubscriberTbl_CustomerTbl" Association="Self.FK_SubscriberTbl_CustomerTbl">
+            <End Role="CustomerTbl" EntitySet="CustomerTbl" />
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberPacksTbl_PackTbl" Association="Self.FK_SubscriberPacksTbl_PackTbl">
+            <End Role="PackTbl" EntitySet="PackTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubscriberPacksTbl_SubscriberTbl" Association="Self.FK_SubscriberPacksTbl_SubscriberTbl">
+            <End Role="SubscriberTbl" EntitySet="SubscriberTbl" />
+            <End Role="SubscriberPacksTbl" EntitySet="SubscriberPacksTbl" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(CellPhoneDBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(CellPhoneDBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CellPhoneDBModelStoreContainer" CdmEntityContainer="CellPhoneDBEntities">
+          <EntitySetMapping Name="CustomerTbl">
+            <EntityTypeMapping TypeName="CellPhoneDBModel.CustomerTbl">
+              <MappingFragment StoreEntitySet="CustomerTbl">
+                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Identity" ColumnName="Identity" />
+                <ScalarProperty Name="Addsress" ColumnName="Addsress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PackTbl">
+            <EntityTypeMapping TypeName="CellPhoneDBModel.PackTbl">
+              <MappingFragment StoreEntitySet="PackTbl">
+                <ScalarProperty Name="IdPack" ColumnName="IdPack" />
+                <ScalarProperty Name="NamePack" ColumnName="NamePack" />
+                <ScalarProperty Name="QtyMiutes" ColumnName="QtyMiutes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriberTbl">
+            <EntityTypeMapping TypeName="CellPhoneDBModel.SubscriberTbl">
+              <MappingFragment StoreEntitySet="SubscriberTbl">
+                <ScalarProperty Name="IdSubscriber" ColumnName="IdSubscriber" />
+                <ScalarProperty Name="NameSubscriber" ColumnName="NameSubscriber" />
+                <ScalarProperty Name="IdCustomer" ColumnName="IdCustomer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CellPhoneDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriberPacksTbl">
+            <EntityTypeMapping TypeName="CellPhoneDBModel.SubscriberPacksTbl">
+              <MappingFragment StoreEntitySet="SubscriberPacksTbl">
+                <ScalarProperty Name="IdSubscriber" ColumnName="IdSubscriber" />
+                <ScalarProperty Name="IdPack" ColumnName="IdPack" />
+                <ScalarProperty Name="UsingMinutes" ColumnName="UsingMinutes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="CellPhoneDBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="CellPhoneDBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="CellPhoneDBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="CellPhoneDBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CellPhoneDBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="CellPhoneDBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CellPhoneDBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="CellPhoneDBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="CellPhoneDBModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

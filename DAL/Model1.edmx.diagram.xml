@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1f979050c48c404ca98eac4eec1be41f" Name="Diagram1">
+        <EntityTypeShape EntityType="DBCellPhoneRMModel.CustomerTbl" Width="1.5" PointX="0.75" PointY="0.875" />
+        <EntityTypeShape EntityType="DBCellPhoneRMModel.PackTbl" Width="2" PointX="2.875" PointY="4.375" />
+        <EntityTypeShape EntityType="DBCellPhoneRMModel.SubscriberPacksTbl" Width="2.875" PointX="6.25" PointY="2.875" />
+        <EntityTypeShape EntityType="DBCellPhoneRMModel.SubscriberTbl" Width="1.5" PointX="3.875" PointY="0.625" />
+        <AssociationConnector Association="DBCellPhoneRMModel.FK_SubscriberTbl_CustomerTbl" />
+        <AssociationConnector Association="DBCellPhoneRMModel.FK_SubscriberPacksTbl_PackTbl" />
+        <AssociationConnector Association="DBCellPhoneRMModel.FK_SubscriberPacksTbl_SubscriberTbl" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
